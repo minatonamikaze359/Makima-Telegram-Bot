@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Makima Admin Dashboard</title>
+<style>body{font-family: Arial;max-width:1000px;margin:20px} table{width:100%;border-collapse:collapse}td,th{border:1px solid #ddd;padding:8px}</style>
+</style></head>
+<body>
+<h1>Makima Admin Dashboard</h1>
+<h2>Users</h2>
+<table><tr><th>User ID</th><th>Username</th><th>Premium</th><th>WhatsApp</th><th>Balance</th></tr>
+{% for u in users %}
+  <tr><td>{{u['user_id']}}</td><td>{{u['username']}}</td><td>{{'Yes' if u['is_premium'] else 'No'}}</td><td>{{'Yes' if u['whatsapp_verified'] else 'No'}}</td><td>{{u['balance']}}</td></tr>
+{% endfor %}
+</table>
+<h2>WhatsApp Proofs</h2>
+<table><tr><th>ID</th><th>User ID</th><th>File</th><th>Timestamp</th><th>Processed</th><th>Actions</th></tr>
+{% for p in proofs %}
+  <tr>
+    <td>{{p['id']}}</td>
+    <td>{{p['user_id']}}</td>
+    <td>{{p['file_id']}}</td>
+    <td>{{p['timestamp']}}</td>
+    <td>{{'Yes' if p['processed'] else 'No'}}</td>
+    <td>{% if not p['processed'] %}<a href="{{ url_for('approve', proof_id=p['id']) }}">Approve</a> | <a href="{{ url_for('reject', proof_id=p['id']) }}">Reject</a>{% endif %}</td>
+  </tr>
+{% endfor %}
+</table>
+</body></html>
